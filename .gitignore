@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+project_structure_with_content.txt
+project_tree_with_content.py
+run_tree_with_content.bat
