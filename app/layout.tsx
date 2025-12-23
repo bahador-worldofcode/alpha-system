@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  // 👇 کد تایید گوگل جدید شما در اینجا قرار گرفت
+  verification: {
+    google: "889fIOlZo4jHk-UB3Sv_X-vuaJQa-YPzZKLPMqpcYEo",
+  },
 };
 
 export default function RootLayout({
@@ -31,28 +35,22 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className={`${vazir.className} bg-zinc-950 text-zinc-100 antialiased`}>
-        {/* فعال‌سازی گارد امنیتی روی کل برنامه */}
         <AuthGuard>
           <div className="flex min-h-screen">
-            {/* سایدبار (فقط دسکتاپ) */}
             <Sidebar />
 
-            {/* محتوای اصلی */}
             <main className="mr-0 flex w-full flex-col justify-between p-4 pb-24 transition-all duration-300 md:mr-64 md:p-8 md:pb-8">
               
               <div className="w-full">
                 {children}
               </div>
 
-              {/* فوتر داشبورد با امضای سازنده (KiyaDev) */}
               <footer className="mt-12 flex flex-col-reverse items-center justify-between gap-4 border-t border-zinc-800 pt-6 md:flex-row">
                 
-                {/* کپی‌رایت سیستم */}
                 <p className="text-sm text-zinc-500">
                   تمامی حقوق محفوظ است © ۱۴۰۳ <span className="font-bold text-zinc-300">آلفا سیستم</span>
                 </p>
 
-                {/* امضای کیا دِو (Designer Tag) */}
                 <a 
                   href="https://kiyadev.ir" 
                   target="_blank"
@@ -77,7 +75,6 @@ export default function RootLayout({
             </main>
           </div>
 
-          {/* منوی پایین (فقط موبایل) */}
           <MobileNav />
 
           <Toaster 
