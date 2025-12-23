@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FolderKanban, Settings } from "lucide-react";
+// اضافه شدن آیکون Book
+import { LayoutDashboard, Users, FolderKanban, Settings, Book } from "lucide-react";
 
 const navItems = [
   { name: 'داشبورد', icon: LayoutDashboard, path: '/' },
   { name: 'کارمندان', icon: Users, path: '/employees' },
   { name: 'پروژه‌ها', icon: FolderKanban, path: '/projects' },
+  // اضافه شدن آیتم بلاگ
+  { name: 'بلاگ', icon: Book, path: '/blog' },
   { name: 'تنظیمات', icon: Settings, path: '/settings' },
 ];
 
 export default function MobileNav() {
   const pathname = usePathname();
-  
-  // در صفحه لاگین نشان نده
+
   if (pathname === '/login') return null;
 
   return (

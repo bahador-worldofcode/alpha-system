@@ -4,12 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { LayoutDashboard, Users, FolderKanban, Settings, LogOut } from 'lucide-react';
+// اضافه شدن آیکون Book
+import { LayoutDashboard, Users, FolderKanban, Settings, LogOut, Book } from 'lucide-react';
 
 const menuItems = [
   { name: 'داشبورد', icon: LayoutDashboard, path: '/' },
   { name: 'کارمندان', icon: Users, path: '/employees' },
   { name: 'پروژه‌ها', icon: FolderKanban, path: '/projects' },
+  // اضافه شدن آیتم وبلاگ به منو
+  { name: 'وبلاگ و منابع', icon: Book, path: '/blog' },
   { name: 'تنظیمات', icon: Settings, path: '/settings' },
 ];
 
@@ -27,7 +30,6 @@ export default function Sidebar() {
   };
 
   return (
-    // تغییر مهم: اضافه شدن hidden md:flex (در موبایل مخفی، در دسکتاپ نمایش)
     <aside className="hidden md:flex fixed right-0 top-0 z-40 h-screen w-64 flex-col border-l border-zinc-800 bg-black text-white">
       
       {/* بخش لوگو */}
