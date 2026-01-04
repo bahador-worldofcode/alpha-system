@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تبدیل لوگو به PNG</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f4f4f5; }
+        .container { text-align: center; background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        svg { width: 200px; height: 200px; margin-bottom: 20px; }
+        button { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #059669; }
+        .hidden-canvas { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>پیش‌نمایش لوگو</h2>
+        <!-- لوگوی شما -->
+        <svg id="sourceSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" /> <stop offset="100%" style="stop-color:#059669;stop-opacity:1" /> </linearGradient>
+            </defs>
+            <path d="M50 5 L93.3 30 V80 L50 105 L6.7 80 V30 Z" fill="url(#grad1)" />
+            <path d="M50 25 L75 75 H65 L50 45 L35 75 H25 L50 25 Z" fill="white" />
+            <rect x="42" y="60" width="16" height="5" rx="1" fill="white" />
+        </svg>
+        <br>
+        <button onclick="generateIcons()">دانلود تمام آیکون‌ها</button>
+        <p id="status" style="margin-top: 10px; color: #555;"></p>
+    </div>
+
+    <script>
+        const sizes = [
+            { name: 'favicon.png', size: 32 },
+            { name: 'icon-192.png', size: 192 }, // سایز استاندارد گوگل
+            { name: 'icon-512.png', size: 512 },
+            { name: 'apple-icon.png', size: 180 }
+        ];
+
+        function generateIcons() {
+            const svg = document.getElementById('sourceSvg');
+            const serializer = new XMLSerializer();
+            const svgData = serializer.serializeToString(svg);
+            const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(svgBlob);
+
+            const img = new Image();
+            img.onload = function() {
+                sizes.forEach((item, index) => {
+                    setTimeout(() => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = item.size;
+                        canvas.height = item.size;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // رسم عکس در کانواس
+                        ctx.drawImage(img, 0, 0, item.size, item.size);
+                        
+                        // دانلود
+                        const link = document.createElement('a');
+                        link.download = item.name;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    }, index * 500); // تاخیر کوچک برای جلوگیری از بلاک شدن دانلودها
+                });
+                document.getElementById('status').innerText = 'دانلودها شروع شد! فایل‌ها را چک کنید.';
+            };
+            img.src = url;
+        }
+    </script>
+</body>
+</html>

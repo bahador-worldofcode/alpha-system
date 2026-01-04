@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -12,18 +12,50 @@ const vazir = Vazirmatn({
   display: "swap",
 });
 
+// آدرس اصلی سایت
+const SITE_URL = "https://alpha-system-eight.vercel.app";
+
+export const viewport: Viewport = {
+  themeColor: "#09090b",
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: '%s | آلفا سیستم',
     default: 'پنل مدیریت آلفا سیستم',
   },
   description: "سامانه یکپارچه مدیریت منابع سازمانی (ERP) - نسخه اینترپرایز",
+  // 👇 تنظیمات جدید آیکون‌ها برای گوگل
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' }, // گوگل اینو دوست داره
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
   },
-  // 👇 کد تایید گوگل جدید شما در اینجا قرار گرفت
+  manifest: '/manifest.json',
   verification: {
     google: "889fIOlZo4jHk-UB3Sv_X-vuaJQa-YPzZKLPMqpcYEo",
+  },
+  openGraph: {
+    title: 'پنل مدیریت آلفا سیستم',
+    description: 'سامانه یکپارچه مدیریت منابع سازمانی',
+    url: SITE_URL,
+    siteName: 'Alpha Systems',
+    locale: 'fa_IR',
+    type: 'website',
+    images: [
+      {
+        url: '/icon-512.png', // استفاده از لوگوی بزرگ برای لینک‌های اشتراک‌گذاری
+        width: 512,
+        height: 512,
+        alt: 'Alpha Systems Logo',
+      },
+    ],
   },
 };
 
@@ -32,8 +64,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
+  // 👇 داده‌های ساختار یافته برای گوگل (JSON-LD)
+  // این کد باعث میشه گوگل دقیقا بدونه لوگوی شما کدومه
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "آلفا سیستم",
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/icon-512.png`,
+    "sameAs": [
+      "https://kiyadev.ir" // اگر لینک اینستاگرام یا لینکدین دارید اینجا اضافه کنید
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+98-21-00000000",
+      "contactType": "customer support"
+    }
+  };
+
   return (
     <html lang="fa" dir="rtl">
+      <head>
+        {/* تزریق جیسون-ال‌دی به هد */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${vazir.className} bg-zinc-950 text-zinc-100 antialiased`}>
         <AuthGuard>
           <div className="flex min-h-screen">

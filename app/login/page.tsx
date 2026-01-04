@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Loader2, ShieldCheck } from 'lucide-react';
+import { Loader2, ShieldCheck, Network, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -21,16 +22,17 @@ export default function LoginPage() {
     });
 
     if (error) {
-      alert(error.message); // نمایش خطا (مثلا رمز اشتباه)
+      alert("اطلاعات ورود اشتباه است"); 
       setLoading(false);
     } else {
-      router.push('/'); // ورود موفق -> هدایت به داشبورد
+      router.push('/');
       router.refresh();
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-800 via-black to-black">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-800 via-black to-black p-4">
+      
       <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 shadow-2xl backdrop-blur-xl">
         
         {/* لوگو و تیتر */}
@@ -85,6 +87,20 @@ export default function LoginPage() {
         </form>
 
       </div>
+
+      {/* ✅ بخش لینک شبکه همکاران (SEO Link) */}
+      <Link 
+        href="/partners" 
+        className="mt-8 group flex items-center gap-2 text-zinc-500 transition-colors hover:text-white"
+        title="مشاهده شبکه همکاران و پروژه‌های دیگر"
+      >
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 group-hover:border-zinc-600 transition-colors">
+            <Network size={16} />
+        </div>
+        <span className="text-sm font-medium">شبکه همکاران تجاری</span>
+        <ArrowLeft size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+      </Link>
+
     </div>
   );
 }
