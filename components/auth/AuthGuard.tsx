@@ -13,21 +13,24 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // 1. چک کردن وضعیت لاگین
-      const { data: { session } } = await supabase.auth.getSession();
-
-      // اگر کاربر در صفحه لاگین است، نیاز به چک کردن نیست (آزاد است)
-      if (pathname === "/login") {
+      // لیست صفحاتی که عموم آزادند ببینند
+      const publicRoutes = ["/login", "/partners", "/blog"];
+      
+      // اگر کاربر در یکی از صفحات عمومی است، نیازی به چک کردن سشن نیست
+      if (publicRoutes.includes(pathname)) {
         setIsAuthorized(true);
         setIsLoading(false);
         return;
       }
 
-      // 2. اگر سشن نداشت (لاگین نبود) -> برو به لاگین
+      // چک کردن وضعیت لاگین برای بقیه صفحات
+      const { data: { session } } = await supabase.auth.getSession();
+
       if (!session) {
+        // اگر لاگین نبود، بفرستش به لاگین
         router.replace("/login");
       } else {
-        // 3. اگر لاگین بود -> اجازه ورود بده
+        // اگر لاگین بود، اجازه بده
         setIsAuthorized(true);
       }
       
@@ -46,7 +49,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [pathname, router]);
 
-  // تا زمانی که داره چک می‌کنه، صفحه لودینگ نشون بده (که صفحه اصلی نپره)
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-black">
@@ -58,6 +60,5 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // اگر مجاز بود، محتوا رو نشون بده
   return isAuthorized ? <>{children}</> : null;
 }
